@@ -38,8 +38,8 @@ export function Button({
 
 	function renderLoading() {
 		return (
-			<div className="flex items-center justify-center">
-				<div className="w-4 h-4 border-2 border-t-white border-gray-800 rounded-full animate-spin mr-3" />
+			<div className="flex items-center justify-center gap-2">
+				<div className="w-4 h-4 border-2 border-t-white border-gray-800 rounded-full animate-spin" />
 				{children}
 			</div>
 		);
@@ -48,7 +48,7 @@ export function Button({
 	return (
 		<button
 			type="button"
-			className={`cursor-pointer px-4 py-1.5 rounded-lg font-medium transition-colors flex items-center justify-center
+			className={`cursor-pointer px-4 py-1.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2
             ${variantClasses[variant]}
             ${fullWidth && "w-full"}
             ${(isLoading || disabled) && "opacity-30 cursor-not-allowed"}
