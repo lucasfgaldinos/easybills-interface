@@ -3,10 +3,31 @@
 
 @theme {
 	--font-inter: "Inter", sans-serif;
+
+	--color-bg-dark: #181a1b;
+	--color-text-light: #f1f1f1;
+	--color-text-muted: #b0b0b0;
+
+	--color-primary-light: #48bb78;
+	--color-primary-base: #38a169;
+	--color-primary-dark: #2f855a;
+
+	--color-blue-base: #3b82f6;
+	--color-blue-dark: #2563eb;
+
+	--color-accent-base: #f6ad55;
+	--color-accent-dark: #d97706;
+
+	--color-error-base: #f43f5e;
+	--color-error-dark: #9f1239;
+
+	--color-neutral-light: #2d3748;
+	--color-neutral-base: #374151;
+	--color-neutral-dark: #1f2937;
 }
 
 body {
-	@apply bg-gray-950 text-white min-h-screen font-inter;
+	@apply bg-bg-dark text-white min-h-screen font-inter;
 }
 
 .container-app {

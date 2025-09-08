@@ -1,11 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-type ButtonVariants =
-	| "primary"
-	| "outline"
-	| "secondary"
-	| "success"
-	| "danger";
+type ButtonVariants = "primary" | "outline" | "secondary" | "danger";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: ReactNode;
@@ -25,21 +20,19 @@ export function Button({
 }: ButtonProps) {
 	const variantClasses = {
 		primary:
-			"bg-emerald-600 border border-emerald-950 text-white hover:bg-emerald-800 active:bg-emerald-950",
+			"bg-primary-base border border-text-muted text-text-light hover:bg-primary-light active:bg-primary-dark",
 		outline:
-			"border border-emerald-600 text-emerald-600 hover:bg-emerald-600/10 active:bg-emerald-600/30",
+			"border border-primary-base text-primary-base hover:bg-primary-base/10 active:primary-base/30",
 		secondary:
-			"bg-gray-600 border border-gray-950 text-white hover:bg-gray-800 active:bg-gray-950",
-		success:
-			"bg-lime-600 border border-lime-950 text-white hover:bg-lime-800 active:bg-lime-950",
+			"bg-neutral-base border border-text-light text-text-light hover:bg-neutral-light active:bg-neutral-dark",
 		danger:
-			"bg-red-600 border border-red-950 text-white hover:bg-red-800 active:bg-red-950",
+			"bg-error-base border border-error-dark text-text-light hover:bg-error-base/50 active:bg-error-dark",
 	};
 
 	function renderLoading() {
 		return (
 			<div className="flex items-center justify-center gap-2">
-				<div className="w-4 h-4 border-2 border-t-white border-gray-800 rounded-full animate-spin" />
+				<div className="w-4 h-4 border-2 border-t-text-light border-text-muted rounded-full animate-spin" />
 				{children}
 			</div>
 		);

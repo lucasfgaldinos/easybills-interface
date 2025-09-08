@@ -1,2 +1,2 @@
-export * from "./button";
-export * from "./googleLoginButton";
+export * from "./button.component";
+export * from "./googleLoginButton.component";
