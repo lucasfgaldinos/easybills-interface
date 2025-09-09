@@ -1,14 +1,23 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import { AuthProvider } from "../context/auth.context";
-import { Home, Login } from "../screens";
+import { DashboardLayout } from "../layout/dashboard.layout";
+import { DashboardScreen, HomeScreen, LoginScreen } from "../screens";
+import { PrivateRoutes } from "./private-routes.route";
 
 export function AppRoutes() {
 	return (
 		<BrowserRouter>
 			<AuthProvider>
 				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/login" element={<Login />} />
+					<Route path="/" element={<HomeScreen />} />
+					<Route path="/login" element={<LoginScreen />} />
+
+					<Route element={<PrivateRoutes />}>
+						<Route element={<DashboardLayout />}>
+							<Route path="/dashboard" element={<DashboardScreen />} />
+						</Route>
+					</Route>
+
 					<Route path="*" element={<h2>Página não encontrada!</h2>} />
 				</Routes>
 			</AuthProvider>

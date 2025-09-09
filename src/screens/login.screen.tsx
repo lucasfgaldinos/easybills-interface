@@ -1,13 +1,24 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import { GoogleLoginButton } from "../components";
 import { useAuth } from "../context/auth.context";
 
-export function Login() {
-	const { signWithGoogle } = useAuth();
+export function LoginScreen() {
+	const navigate = useNavigate();
+	const { signWithGoogle, authState } = useAuth();
 	async function handleLogin() {
 		try {
 			await signWithGoogle();
-		} catch (_) {}
+		} catch (_) {
+			console.error("Error trying to log in with Google!");
+		}
 	}
+
+	useEffect(() => {
+		if (authState.user && !authState.loading) {
+			navigate("/dashboard");
+		}
+	}, [authState.user, authState.loading, navigate]);
 
 	return (
 		<div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -32,6 +43,14 @@ export function Login() {
 					</section>
 
 					<GoogleLoginButton isLoading={false} onClick={handleLogin} />
+
+					{authState.error && (
+						<div className="p-4 rounded-sm bg-error-base/10">
+							<p className="text-sm text-error-base">
+								Erro ao tentar logar com o Google! Por favor, tente novamente.
+							</p>
+						</div>
+					)}
 
 					<footer className="mt-6">
 						<p className="mt-2 text-sm text-text-light">

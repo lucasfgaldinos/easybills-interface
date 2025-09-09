@@ -1,5 +1,6 @@
 import { CreditCard, List, TrendingUp, Wallet } from "lucide-react";
 import type { JSX } from "react";
+import { useNavigate } from "react-router";
 import { Button } from "../components";
 
 interface CardContentProps {
@@ -8,7 +9,9 @@ interface CardContentProps {
 	description: string;
 }
 
-export function Home() {
+export function HomeScreen() {
+	const navigate = useNavigate();
+
 	const cardContent: ReadonlyArray<CardContentProps> = [
 		{
 			icon: <Wallet className="w-8 h-8 text-primary-light" />,
@@ -52,7 +55,9 @@ export function Home() {
 								facilidade.
 							</p>
 							<div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-								<Button>Começar agora</Button>
+								<Button onClick={() => navigate("/login")}>
+									Acessar o Dashboard
+								</Button>
 							</div>
 						</div>
 					</div>
@@ -97,7 +102,9 @@ export function Home() {
 							Comece a usar o EasyBills hoje mesmo e tenha o controle total
 							sobre seu dinheiro. É intuitivo e fácil de usar!
 						</p>
-						<Button className="mx-auto">Criar conta</Button>
+						<Button onClick={() => navigate("/login")} className="mx-auto">
+							Começar agora
+						</Button>
 					</div>
 				</section>
 

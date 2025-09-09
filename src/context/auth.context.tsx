@@ -52,9 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				}
 			},
 			(error) => {
-				console.error(
-					"Something went wrong while trying to sign in with Google.",
-				);
+				console.error("Error trying to log in with Google!");
 				setAuthState({
 					user: null,
 					error: error.message,
@@ -75,14 +73,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		try {
 			await signInWithPopup(firebaseAuth, googleAuthProvider);
 		} catch (err) {
-			console.error(
-				"Something went wrong while trying to sign in with Google.",
-			);
+			console.error("Error trying to log in with Google!");
 
 			const errorMessage =
 				err instanceof Error
 					? err.message
-					: "Something went wrong while trying to sign in with Google.";
+					: "Error trying to log in with Google!";
 
 			setAuthState((prev) => ({
 				...prev,
@@ -100,14 +96,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		try {
 			await firebaseSignOut(firebaseAuth);
 		} catch (err) {
-			console.error(
-				"Something went wrong while trying to sign in with Google.",
-			);
+			console.error("Error trying to log in with Google!");
 
 			const errorMessage =
 				err instanceof Error
 					? err.message
-					: "Something went wrong while trying to sign in with Google.";
+					: "Error trying to log in with Google!";
 
 			setAuthState((prev) => ({
 				...prev,
