@@ -33,6 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			firebaseAuth,
 			(user) => {
 				if (user) {
+					console.log(user);
 					setAuthState({
 						user: {
 							uid: user.uid,

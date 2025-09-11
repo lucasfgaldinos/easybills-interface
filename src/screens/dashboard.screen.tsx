@@ -5,7 +5,7 @@ export function DashboardScreen() {
 	useEffect(() => {
 		async function getTransactions() {
 			try {
-				const response = await api.get("/transactions");
+				const response = await api.get("/transactions?month=09&year=2025");
 
 				console.log(response);
 			} catch (_) {
