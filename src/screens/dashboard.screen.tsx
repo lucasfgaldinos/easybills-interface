@@ -1,9 +1,27 @@
-import { ArrowUp, TrendingUp, Wallet } from "lucide-react";
+import {
+	ChartColumn,
+	ChartPie,
+	TrendingDown,
+	TrendingUp,
+	Wallet,
+} from "lucide-react";
 import { useEffect, useState } from "react";
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Cell,
+	Pie,
+	PieChart,
+	Rectangle,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
 import { Card, MonthYearSelect } from "../components";
-import { getTransactionsSummary } from "../services";
-import type { TransactionSummary } from "../types";
+import { getTransactionsMonthly, getTransactionsSummary } from "../services";
+import type { MonthlyItem, TransactionSummary } from "../types";
 import { formatCurrency } from "../utils";
 
 const initialSummary: TransactionSummary = {
@@ -18,6 +36,7 @@ export function DashboardScreen() {
 	const [year, setYear] = useState<number>(currentDate.getFullYear());
 	const [month, setMonth] = useState<number>(currentDate.getMonth() + 1);
 	const [summary, setSummary] = useState<TransactionSummary>(initialSummary);
+	const [monthlyItemsData, setMonthlyItemsData] = useState<MonthlyItem[]>([]);
 
 	useEffect(() => {
 		async function getUserTransactionsSummary() {
@@ -31,6 +50,21 @@ export function DashboardScreen() {
 		}
 
 		getUserTransactionsSummary();
+	}, [month, year]);
+
+	useEffect(() => {
+		async function getUserTransactionMonthly() {
+			try {
+				const responseData = await getTransactionsMonthly(month, year, 4);
+
+				setMonthlyItemsData(responseData.history);
+				console.log(responseData.history);
+			} catch (_) {
+				console.error("Error making API request.");
+			}
+		}
+
+		getUserTransactionMonthly();
 	}, [month, year]);
 
 	function renderPieChartLabel({
@@ -75,7 +109,7 @@ export function DashboardScreen() {
 
 				<Card
 					title={`Receitas`}
-					icon={<ArrowUp size={26} className="text-blue-base" />}
+					icon={<TrendingUp size={26} className="text-blue-base" />}
 					hover
 				>
 					<p
@@ -89,7 +123,7 @@ export function DashboardScreen() {
 
 				<Card
 					title={`Despesas`}
-					icon={<Wallet size={26} className="text-error-base" />}
+					icon={<TrendingDown size={26} className="text-error-base" />}
 					hover
 				>
 					<p
@@ -102,11 +136,11 @@ export function DashboardScreen() {
 				</Card>
 			</div>
 
-			<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 mt-3 min-h-96">
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6 mt-4 min-h-96">
 				<Card
 					hover
 					title="Despesas por categoria"
-					icon={<TrendingUp size={20} className="text-primary-light" />}
+					icon={<ChartPie size={26} className="text-primary-light" />}
 				>
 					{summary.expensesByCategory.length > 0 ? (
 						<div className="h-72 mt-2">
@@ -134,6 +168,68 @@ export function DashboardScreen() {
 							<p>Nenhuma despesa registrada nesse período.</p>
 						</div>
 					)}
+				</Card>
+
+				<Card
+					className="min-h-80"
+					title="Histórico"
+					icon={<ChartColumn size={26} className="text-primary-light" />}
+				>
+					<div className="h-72 mt-4">
+						{monthlyItemsData.length > 0 ? (
+							<ResponsiveContainer width="100%" height="100%">
+								<BarChart data={monthlyItemsData} margin={{ left: 20 }}>
+									<CartesianGrid strokeDasharray="3 3" stroke="invisible" />
+									<XAxis
+										dataKey="name"
+										stroke="var(--color-text-light)"
+										tick={{
+											style: { textTransform: "capitalize", fontSize: 12 },
+										}}
+									/>
+									<YAxis
+										stroke="var(--color-text-muted)"
+										tickFormatter={(value) => formatCurrency(value / 100)}
+										tick={{ style: { fontSize: 12 } }}
+									/>
+									<Tooltip
+										formatter={(value) => formatCurrency(Number(value) / 100)}
+										contentStyle={{
+											backgroundColor: "var(--color-neutral-dark)",
+											borderColor: "var(--color-neutral-base)",
+										}}
+										labelStyle={{ textTransform: "capitalize" }}
+									/>
+									<Bar
+										dataKey="income"
+										name="Receitas"
+										fill="var(--color-blue-base)"
+										activeBar={
+											<Rectangle
+												fill="var(--color-blue-dark)"
+												stroke="var(--color-blue-base)"
+											/>
+										}
+									/>
+									<Bar
+										dataKey="expenses"
+										name="Despesas"
+										fill="var(--color-error-base)"
+										activeBar={
+											<Rectangle
+												fill="var(--color-error-dark)"
+												stroke="var(--color-error-base)"
+											/>
+										}
+									/>
+								</BarChart>
+							</ResponsiveContainer>
+						) : (
+							<div className="flex items-center justify-center h-64 text-accent-base">
+								<p>Nenhuma despesa ou entrada registrada nesse período.</p>
+							</div>
+						)}
+					</div>
 				</Card>
 			</div>
 		</div>
