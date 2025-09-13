@@ -1,5 +1,6 @@
-import { ArrowUp, Wallet } from "lucide-react";
+import { ArrowUp, TrendingUp, Wallet } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, MonthYearSelect } from "../components";
 import { getTransactionsSummary } from "../services";
 import type { TransactionSummary } from "../types";
@@ -32,10 +33,22 @@ export function DashboardScreen() {
 		getUserTransactionsSummary();
 	}, [month, year]);
 
+	function renderPieChartLabel({
+		categoryName,
+		percent,
+		// biome-ignore lint: false positive
+	}: any): string {
+		return `${categoryName} - ${(percent * 100).toFixed(1)}%`;
+	}
+
+	function formatTooltipValue(value: number | string): string {
+		return formatCurrency(typeof value === "number" ? value / 100 : 0);
+	}
+
 	return (
 		<div className="container-app py-6">
 			<div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-				<h1 className="text-2xl font-bold mb-4 md:mb-0">Tela de Dashboard</h1>
+				<h1 className="text-2xl font-bold mb-4 md:mb-0">Dashboard</h1>
 				<MonthYearSelect
 					month={month}
 					year={year}
@@ -86,6 +99,41 @@ export function DashboardScreen() {
 					>
 						{formatCurrency(summary.totalExpenses / 100)}
 					</p>
+				</Card>
+			</div>
+
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 mt-3 min-h-96">
+				<Card
+					hover
+					title="Despesas por categoria"
+					icon={<TrendingUp size={20} className="text-primary-light" />}
+				>
+					{summary.expensesByCategory.length > 0 ? (
+						<div className="h-72 mt-2">
+							<ResponsiveContainer>
+								<PieChart>
+									<Pie
+										data={summary.expensesByCategory}
+										cx="50%"
+										cy="50%"
+										outerRadius={80}
+										dataKey="amount"
+										nameKey="categoryName"
+										label={renderPieChartLabel}
+									>
+										{summary.expensesByCategory.map((entry) => (
+											<Cell key={entry.categoryId} fill={entry.categoryColor} />
+										))}
+									</Pie>
+									<Tooltip formatter={formatTooltipValue} />
+								</PieChart>
+							</ResponsiveContainer>
+						</div>
+					) : (
+						<div className="flex items-center justify-center h-64 text-accent-base">
+							<p>Nenhuma despesa registrada nesse período.</p>
+						</div>
+					)}
 				</Card>
 			</div>
 		</div>
