@@ -7,10 +7,11 @@ import {
 	Search,
 	Trash2,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { type ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 import { Button, Card, Input, MonthYearSelect } from "../components";
-import { getTransactions } from "../services";
+import { deleteTransaction, getTransactions } from "../services";
 import type { Transaction } from "../types";
 import { formatCurrency, formatDate } from "../utils";
 
@@ -22,7 +23,11 @@ export function TransactionsScreen() {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
+	const [filteredTransactions, setFilteredTransactions] = useState<
+		Transaction[]
+	>([]);
 	const [deletingId, setDeletingId] = useState<string>("");
+	const [searchText, setSearchText] = useState<string>("");
 
 	async function getUserTransactions(): Promise<void> {
 		try {
@@ -31,6 +36,7 @@ export function TransactionsScreen() {
 			const data = await getTransactions({ month, year });
 
 			setTransactions(data);
+			setFilteredTransactions(data);
 		} catch (_) {
 			setError("Algo deu errado por aqui!");
 		} finally {
@@ -43,12 +49,41 @@ export function TransactionsScreen() {
 		getUserTransactions();
 	}, [month, year]);
 
-	function handleDelete(id: string): void {
+	async function handleDelete(id: string): Promise<void> {
+		try {
+			setDeletingId(id);
+
+			await deleteTransaction(id);
+
+			const updatedTransactions = transactions.filter((t) => {
+				return t.id !== id;
+			});
+			setTransactions(updatedTransactions);
+			toast.success("Transação deletada com sucesso!");
+		} catch (err) {
+			console.error({ error: err });
+			toast.error("Erro ao deletar transação!");
+		} finally {
+			setDeletingId("");
+		}
+	}
+
+	function confirmDelete(id: string): void {
 		if (deletingId) {
 			return;
 		}
-		setDeletingId(id);
-		console.log("btn clicado");
+		if (window.confirm("Tem certeza que deseja deletar essa transação?")) {
+			handleDelete(id);
+		}
+	}
+
+	function handleSearchChange(event: ChangeEvent<HTMLInputElement>): void {
+		setSearchText(event.target.value);
+		setFilteredTransactions(
+			transactions.filter((t) =>
+				t.description.toLowerCase().includes(event.target.value.toLowerCase()),
+			),
+		);
 	}
 
 	return (
@@ -78,6 +113,8 @@ export function TransactionsScreen() {
 					placeholder="Buscar transações..."
 					icon={<Search size={18} />}
 					fullWidth
+					onChange={handleSearchChange}
+					value={searchText}
 				/>
 			</Card>
 
@@ -98,9 +135,19 @@ export function TransactionsScreen() {
 							Tentar novamente
 						</Button>
 					</div>
-				) : transactions.length === 0 ? (
+				) : filteredTransactions.length === 0 ? (
 					<div className="text-center py-12">
-						<p className="text-accent-base">Nenhuma transação encontrada.</p>
+						<p className="text-accent-base mb-6">
+							Nenhuma transação encontrada.
+						</p>
+						<Button
+							onClick={() => navigate("/transactions/create")}
+							variant="primary"
+							className="mx-auto"
+						>
+							<Plus size={18} className="text-text-light" />
+							Adicionar transação
+						</Button>
 					</div>
 				) : (
 					<div className="overflow-x-auto">
@@ -139,7 +186,7 @@ export function TransactionsScreen() {
 							</thead>
 
 							<tbody className="divide-y divide-neutral-light">
-								{transactions.map((transaction) => (
+								{filteredTransactions.map((transaction) => (
 									<tr key={transaction.id} className="hover:bg-neutral-light">
 										<td className="px-3 py-5 text-sm whitespace-nowrap">
 											<div className="flex items-center">
@@ -188,7 +235,7 @@ export function TransactionsScreen() {
 											<button
 												className={`${deletingId ? "hover:bg-transparent active:bg-transparent cursor-not-allowed p-2 rounded-full" : "hover:bg-error-dark/30 p-2 rounded-full cursor-pointer active:bg-error-dark/70 transition-colors"} `}
 												type="button"
-												onClick={() => handleDelete(transaction.id)}
+												onClick={() => confirmDelete(transaction.id)}
 												aria-label="Deletar transação"
 												disabled={deletingId.length > 0}
 											>

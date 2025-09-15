@@ -13,7 +13,7 @@ import { PrivateRoutes } from "./private-routes.route";
 export function AppRoutes() {
 	const toastConfig: ToastContainerProps = {
 		position: "top-right",
-		autoClose: 3000,
+		autoClose: 4000,
 		hideProgressBar: false,
 		newestOnTop: true,
 		closeOnClick: true,

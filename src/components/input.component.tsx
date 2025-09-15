@@ -22,7 +22,7 @@ export function Input({
 	const inputId = id || generateId;
 
 	return (
-		<div className={`${fullWidth ? "w-full" : ""} mb-4`}>
+		<div className={`${fullWidth ? "w-full" : ""}`}>
 			{label && (
 				<label
 					htmlFor={inputId}
