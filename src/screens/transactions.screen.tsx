@@ -1,9 +1,18 @@
-import { AlertCircle, Loader, Plus, Search } from "lucide-react";
+import {
+	AlertCircle,
+	ArrowDown,
+	ArrowUp,
+	Loader,
+	Plus,
+	Search,
+	Trash2,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Button, Card, Input, MonthYearSelect } from "../components";
 import { getTransactions } from "../services";
 import type { Transaction } from "../types";
+import { formatCurrency, formatDate } from "../utils";
 
 export function TransactionsScreen() {
 	const navigate = useNavigate();
@@ -13,6 +22,7 @@ export function TransactionsScreen() {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
+	const [deletingId, setDeletingId] = useState<string>("");
 
 	async function getUserTransactions(): Promise<void> {
 		try {
@@ -32,6 +42,14 @@ export function TransactionsScreen() {
 	useEffect(() => {
 		getUserTransactions();
 	}, [month, year]);
+
+	function handleDelete(id: string): void {
+		if (deletingId) {
+			return;
+		}
+		setDeletingId(id);
+		console.log("btn clicado");
+	}
 
 	return (
 		<div className="container-app">
@@ -85,7 +103,107 @@ export function TransactionsScreen() {
 						<p className="text-accent-base">Nenhuma transação encontrada.</p>
 					</div>
 				) : (
-					<div>Aqui estão as transações!</div>
+					<div className="overflow-x-auto">
+						<table className="w-full divide-y divide-neutral-light min-h-full">
+							<thead>
+								<tr>
+									<th
+										scope="col"
+										className="p-3 text-left text-xs font-medium text-text-muted uppercase"
+									>
+										Descrição
+									</th>
+									<th
+										scope="col"
+										className="p-3 text-left text-xs font-medium text-text-muted uppercase"
+									>
+										Data
+									</th>
+									<th
+										scope="col"
+										className="p-3 text-left text-xs font-medium text-text-muted uppercase"
+									>
+										Categoria
+									</th>
+									<th
+										scope="col"
+										className="p-3 text-left text-xs font-medium text-text-muted uppercase"
+									>
+										Valor
+									</th>
+									<th
+										scope="col"
+										className="p-3 text-left text-xs font-medium text-text-muted uppercase"
+									/>
+								</tr>
+							</thead>
+
+							<tbody className="divide-y divide-neutral-light">
+								{transactions.map((transaction) => (
+									<tr key={transaction.id} className="hover:bg-neutral-light">
+										<td className="px-3 py-5 text-sm whitespace-nowrap">
+											<div className="flex items-center">
+												<div className="mr-2">
+													{transaction.type === "income" ? (
+														<ArrowUp size={18} className="text-primary-light" />
+													) : (
+														<ArrowDown size={18} className="text-error-base" />
+													)}
+												</div>
+												<span className="text-sm font-medium text-text-light">
+													{transaction.description}
+												</span>
+											</div>
+										</td>
+
+										<td className="px-3 py-5 text-sm whitespace-nowrap">
+											<p className="text-text-light">
+												{formatDate(transaction.date)}
+											</p>
+										</td>
+
+										<td className="px-3 py-5 text-sm whitespace-nowrap">
+											<div className="flex items-center">
+												<div
+													className="w-2.5 h-2.5 rounded-full mr-2"
+													style={{
+														backgroundColor: `${transaction.category.color}`,
+													}}
+												/>
+												<span className="text-sm text-text-light">
+													{transaction.category.name}
+												</span>
+											</div>
+										</td>
+
+										<td className="px-3 py-5 text-sm whitespace-nowrap">
+											<span
+												className={`${transaction.type === "income" ? "text-primary-light" : "text-error-base"}`}
+											>
+												{formatCurrency(transaction.amount / 100)}
+											</span>
+										</td>
+
+										<td className="px-3 py-5 text-sm whitespace-nowrap">
+											<button
+												className={`${deletingId ? "hover:bg-transparent active:bg-transparent cursor-not-allowed p-2 rounded-full" : "hover:bg-error-dark/30 p-2 rounded-full cursor-pointer active:bg-error-dark/70 transition-colors"} `}
+												type="button"
+												onClick={() => handleDelete(transaction.id)}
+												aria-label="Deletar transação"
+												disabled={deletingId.length > 0}
+											>
+												{deletingId === transaction.id ? (
+													<span className="inline-block w-4 h-4 border border-text-light border-t-transparent rounded-full animate-spin" />
+												) : (
+													<Trash2 size={20} className="text-error-base" />
+												)}
+											</button>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
 				)}
 			</Card>
 		</div>
