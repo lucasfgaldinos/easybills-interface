@@ -1,7 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import { AuthProvider } from "../context/auth.context";
 import { DashboardLayout } from "../layout/dashboard.layout";
-import { DashboardScreen, HomeScreen, LoginScreen } from "../screens";
+import {
+	DashboardScreen,
+	HomeScreen,
+	LoginScreen,
+	TransactionsScreen,
+} from "../screens";
 import { PrivateRoutes } from "./private-routes.route";
 
 export function AppRoutes() {
@@ -15,6 +20,7 @@ export function AppRoutes() {
 					<Route element={<PrivateRoutes />}>
 						<Route element={<DashboardLayout />}>
 							<Route path="/dashboard" element={<DashboardScreen />} />
+							<Route path="/transactions" element={<TransactionsScreen />} />
 						</Route>
 					</Route>
 

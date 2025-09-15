@@ -171,6 +171,7 @@ export function DashboardScreen() {
 				</Card>
 
 				<Card
+					hover
 					className="min-h-80"
 					title="Histórico"
 					icon={<ChartColumn size={26} className="text-primary-light" />}

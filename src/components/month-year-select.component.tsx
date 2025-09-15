@@ -69,7 +69,7 @@ export function MonthYearSelect({
 	}
 
 	return (
-		<div className="flex items-center justify-between gap-1 bg-bg-dark rounded-lg p-3 border border-neutral-base">
+		<div className="flex items-center justify-between gap-2 bg-bg-dark rounded-lg p-3 border border-neutral-base">
 			<button
 				type="button"
 				className="text-text-muted cursor-pointer p-1 rounded-md hover:bg-neutral-dark hover:text-primary-light transition-colors"
@@ -79,40 +79,42 @@ export function MonthYearSelect({
 				<ChevronLeft />
 			</button>
 
-			<div>
-				<label htmlFor={monthSelectId} className="sr-only">
-					Selecionar mês
-				</label>
-				<select
-					value={month}
-					onChange={(e) => onMonthChange(Number(e.target.value))}
-					id={monthSelectId}
-					className="bg-neutral-dark cursor-pointer border border-neutral-light rounded-md py-1 px-3 text-sm font-medium text-text-light focus:outline-none focus:ring-1 ring-primary-light"
-				>
-					{monthNames.map((name, index) => (
-						<option key={name} value={index + 1}>
-							{name}
-						</option>
-					))}
-				</select>
-			</div>
+			<div className="flex flex-col gap-2 items-center md:flex-row">
+				<div>
+					<label htmlFor={monthSelectId} className="sr-only">
+						Selecionar mês
+					</label>
+					<select
+						value={month}
+						onChange={(e) => onMonthChange(Number(e.target.value))}
+						id={monthSelectId}
+						className="bg-neutral-dark cursor-pointer border border-neutral-light rounded-md py-1 px-3 text-sm font-medium text-text-light focus:outline-none focus:ring-1 ring-primary-light"
+					>
+						{monthNames.map((name, index) => (
+							<option key={name} value={index + 1}>
+								{name}
+							</option>
+						))}
+					</select>
+				</div>
 
-			<div>
-				<label htmlFor={yearSelectId} className="sr-only">
-					Selecionar ano
-				</label>
-				<select
-					value={year}
-					onChange={(e) => onYearChange(Number(e.target.value))}
-					id={yearSelectId}
-					className="bg-neutral-dark cursor-pointer border border-neutral-light rounded-md py-1 px-3 text-sm font-medium text-text-light focus:outline-none focus:ring-1 ring-primary-light"
-				>
-					{years.sort().map((item) => (
-						<option key={item.id} value={item.year}>
-							{item.year}
-						</option>
-					))}
-				</select>
+				<div>
+					<label htmlFor={yearSelectId} className="sr-only">
+						Selecionar ano
+					</label>
+					<select
+						value={year}
+						onChange={(e) => onYearChange(Number(e.target.value))}
+						id={yearSelectId}
+						className="bg-neutral-dark cursor-pointer border border-neutral-light rounded-md py-1 px-3 text-sm font-medium text-text-light focus:outline-none focus:ring-1 ring-primary-light"
+					>
+						{years.sort().map((item) => (
+							<option key={item.id} value={item.year}>
+								{item.year}
+							</option>
+						))}
+					</select>
+				</div>
 			</div>
 
 			<button

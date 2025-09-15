@@ -41,7 +41,7 @@ export function Button({
 	return (
 		<button
 			type="button"
-			className={`cursor-pointer px-4 py-1.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2
+			className={`cursor-pointer px-4 py-2 rounded-full font-medium transition-colors flex items-center justify-center gap-2
             ${variantClasses[variant]}
             ${fullWidth && "w-full"}
             ${(isLoading || disabled) && "opacity-30 cursor-not-allowed"}

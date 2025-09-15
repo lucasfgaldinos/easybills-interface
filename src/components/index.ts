@@ -3,4 +3,5 @@ export * from "./card.component";
 export * from "./footer.component";
 export * from "./google-login-button.component";
 export * from "./header.component";
+export * from "./input.component";
 export * from "./month-year-select.component";
