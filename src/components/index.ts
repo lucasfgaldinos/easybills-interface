@@ -5,3 +5,4 @@ export * from "./google-login-button.component";
 export * from "./header.component";
 export * from "./input.component";
 export * from "./month-year-select.component";
+export * from "./transaction-type-selector.component";

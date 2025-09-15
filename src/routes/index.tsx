@@ -6,6 +6,7 @@ import {
 	DashboardScreen,
 	HomeScreen,
 	LoginScreen,
+	TransactionFormScreen,
 	TransactionsScreen,
 } from "../screens";
 import { PrivateRoutes } from "./private-routes.route";
@@ -34,6 +35,10 @@ export function AppRoutes() {
 						<Route element={<DashboardLayout />}>
 							<Route path="/dashboard" element={<DashboardScreen />} />
 							<Route path="/transactions" element={<TransactionsScreen />} />
+							<Route
+								path="/transactions/create"
+								element={<TransactionFormScreen />}
+							/>
 						</Route>
 					</Route>
 
