@@ -59,14 +59,19 @@ export function TransactionFormScreen() {
 	function handleSubmit() {}
 
 	return (
-		<div>
-			<div>
-				<h1>Nova transação</h1>
+		<div className="container-app">
+			<div className="max-w-2xl mx-auto">
+				<h1 className="text-2xl mb-6 font-bold">Nova transação</h1>
 
 				<Card>
-					<form onSubmit={handleSubmit}>
-						<div className="mb-4">
-							<label htmlFor={selectTypeId}>Tipo de transação</label>
+					<form onSubmit={handleSubmit} className="flex flex-col gap-4">
+						<div className="flex flex-col gap-2 mb-3">
+							<label
+								htmlFor={selectTypeId}
+								className="font-bold text-sm text-text-muted"
+							>
+								Tipo de transação
+							</label>
 							<TransactionTypeSelector
 								id={selectTypeId}
 								value={formData.type}
@@ -104,6 +109,7 @@ export function TransactionFormScreen() {
 							name="date"
 							value={formData.date}
 							onChange={handleChange}
+							className="text-red-500"
 						/>
 
 						<Select

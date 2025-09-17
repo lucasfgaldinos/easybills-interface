@@ -38,7 +38,6 @@ export function TransactionTypeSelector({
 
 	return (
 		<fieldset id={id} className="grid grid-cols-1 md:grid-cols-2 gap-2">
-			<legend>Tipo de transação</legend>
 			{transactionsTypeButtons.map((item) => (
 				<button
 					className={`cursor-pointer font-bold flex items-center justify-center border rounded-md p-2 w-full transition-all
