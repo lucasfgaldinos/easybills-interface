@@ -16,6 +16,7 @@ export function Button({
 	isLoading = false,
 	className,
 	disabled,
+	type = "button",
 	...rest
 }: ButtonProps) {
 	const variantClasses = {
@@ -40,7 +41,7 @@ export function Button({
 
 	return (
 		<button
-			type="button"
+			type={type}
 			className={`cursor-pointer px-4 py-2 rounded-full font-medium transition-colors flex items-center justify-center gap-2
             ${variantClasses[variant]}
             ${fullWidth && "w-full"}

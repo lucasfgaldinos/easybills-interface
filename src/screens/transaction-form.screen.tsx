@@ -1,8 +1,22 @@
-import { Calendar, DollarSign, Tag } from "lucide-react";
-import { type ChangeEvent, useEffect, useId, useState } from "react";
-import { Card, Input, Select, TransactionTypeSelector } from "../components";
-import { getCategories } from "../services";
-import type { Category, TransactionType } from "../types";
+import { AlertCircle, Calendar, DollarSign, Save, Tag } from "lucide-react";
+import {
+	type ChangeEvent,
+	type FormEvent,
+	useEffect,
+	useId,
+	useState,
+} from "react";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import {
+	Button,
+	Card,
+	Input,
+	Select,
+	TransactionTypeSelector,
+} from "../components";
+import { createTransaction, getCategories } from "../services";
+import type { Category, CreateTransactionDTO, TransactionType } from "../types";
 
 interface FormData {
 	description: string;
@@ -21,9 +35,11 @@ const initialFormData: FormData = {
 };
 
 export function TransactionFormScreen() {
+	const navigate = useNavigate();
 	const selectTypeId = useId();
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [formData, setFormData] = useState<FormData>(initialFormData);
+	const [formError, setFormError] = useState<string>("");
 
 	useEffect(() => {
 		async function loadCategories(): Promise<void> {
@@ -56,7 +72,56 @@ export function TransactionFormScreen() {
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	}
 
-	function handleSubmit() {}
+	function handleCancel(): void {
+		navigate("/transactions");
+	}
+
+	function validateForm(): boolean {
+		if (
+			!formData.description ||
+			!formData.amount ||
+			!formData.date ||
+			!formData.categoryId
+		) {
+			setFormError("Preencha todos os campos!");
+			return false;
+		}
+
+		if (formData.amount <= 0) {
+			setFormError("O valor deve ser maior que 0!");
+			return false;
+		}
+
+		return true;
+	}
+
+	async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
+		e.preventDefault();
+
+		try {
+			if (!validateForm()) {
+				return;
+			}
+
+			const transactionData: CreateTransactionDTO = {
+				description: formData.description,
+				amount: Number(formData.amount),
+				categoryId: formData.categoryId,
+				date: new Date(formData.date).toISOString(),
+				type: formData.type,
+			};
+
+			await createTransaction(transactionData);
+			toast.success("Transação salva com sucesso!");
+			navigate("/transactions");
+		} catch (_) {
+			toast.error(
+				"Erro ao salvar a transação! Por favor, verifique os campos e tente novamente.",
+			);
+		}
+
+		console.log(e);
+	}
 
 	return (
 		<div className="container-app">
@@ -64,6 +129,13 @@ export function TransactionFormScreen() {
 				<h1 className="text-2xl mb-6 font-bold">Nova transação</h1>
 
 				<Card>
+					{formError && (
+						<div className="bg-error-base/50 w-full mb-4 rounded-md p-2 flex gap-2 items-center justify-center">
+							<AlertCircle />
+							<p className="text-text-light text-sm text-center">{formError}</p>
+						</div>
+					)}
+
 					<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 						<div className="flex flex-col gap-2 mb-3">
 							<label
@@ -80,7 +152,6 @@ export function TransactionFormScreen() {
 						</div>
 
 						<Input
-							required
 							placeholder="Ex: Mercado, Salário..."
 							label="Descrição"
 							name="description"
@@ -89,11 +160,9 @@ export function TransactionFormScreen() {
 						/>
 
 						<Input
-							required
 							placeholder="R$ 0,00"
 							type="number"
 							step="0.01"
-							min="0.01"
 							icon={<DollarSign size={18} />}
 							label="Valor"
 							name="amount"
@@ -102,7 +171,6 @@ export function TransactionFormScreen() {
 						/>
 
 						<Input
-							required
 							type="date"
 							icon={<Calendar size={18} />}
 							label="Data"
@@ -118,7 +186,6 @@ export function TransactionFormScreen() {
 							value={formData.categoryId}
 							onChange={handleChange}
 							icon={<Tag size={18} />}
-							required
 							options={[
 								{ value: "", label: "Selecione uma categoria" },
 								...filteredCategories.map((c) => ({
@@ -127,6 +194,16 @@ export function TransactionFormScreen() {
 								})),
 							]}
 						/>
+
+						<div className="flex justify-end items-center gap-4 mt-7">
+							<Button type="button" variant="secondary" onClick={handleCancel}>
+								Cancelar
+							</Button>
+							<Button type="submit" variant="outline">
+								<Save size={18} />
+								Salvar
+							</Button>
+						</div>
 					</form>
 				</Card>
 			</div>
