@@ -1,4 +1,11 @@
-import { AlertCircle, Calendar, DollarSign, Save, Tag } from "lucide-react";
+import {
+	AlertCircle,
+	Calendar,
+	DollarSign,
+	Loader2,
+	Save,
+	Tag,
+} from "lucide-react";
 import {
 	type ChangeEvent,
 	type FormEvent,
@@ -40,6 +47,7 @@ export function TransactionFormScreen() {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [formData, setFormData] = useState<FormData>(initialFormData);
 	const [formError, setFormError] = useState<string>("");
+	const [loading, setLoading] = useState<boolean>(false);
 
 	useEffect(() => {
 		async function loadCategories(): Promise<void> {
@@ -96,6 +104,7 @@ export function TransactionFormScreen() {
 	}
 
 	async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
+		setLoading(true);
 		e.preventDefault();
 
 		try {
@@ -107,7 +116,7 @@ export function TransactionFormScreen() {
 				description: formData.description,
 				amount: Number(formData.amount),
 				categoryId: formData.categoryId,
-				date: new Date(formData.date).toISOString(),
+				date: `${formData.date}T15:00:00.000Z`,
 				type: formData.type,
 			};
 
@@ -118,9 +127,9 @@ export function TransactionFormScreen() {
 			toast.error(
 				"Erro ao salvar a transação! Por favor, verifique os campos e tente novamente.",
 			);
+		} finally {
+			setLoading(false);
 		}
-
-		console.log(e);
 	}
 
 	return (
@@ -196,11 +205,20 @@ export function TransactionFormScreen() {
 						/>
 
 						<div className="flex justify-end items-center gap-4 mt-7">
-							<Button type="button" variant="secondary" onClick={handleCancel}>
+							<Button
+								disabled={loading}
+								type="button"
+								variant="secondary"
+								onClick={handleCancel}
+							>
 								Cancelar
 							</Button>
-							<Button type="submit" variant="outline">
-								<Save size={18} />
+							<Button disabled={loading} type="submit" variant="outline">
+								{loading ? (
+									<Loader2 size={18} className="animate-spin" />
+								) : (
+									<Save size={18} />
+								)}
 								Salvar
 							</Button>
 						</div>
