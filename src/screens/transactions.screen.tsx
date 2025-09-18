@@ -89,7 +89,7 @@ export function TransactionsScreen() {
 	return (
 		<div className="container-app">
 			<div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-				<h1 className="text-2xl font-bold mb-4 md:mb-0 text-primary-base">
+				<h1 className="text-2xl font-bold mb-4 md:mb-0 text-text-light">
 					Transações
 				</h1>
 
