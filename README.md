@@ -37,14 +37,18 @@ Este repositório contém o código-fonte da **interface web** da aplicação.
 - 🕒 Manipulação de datas com Dayjs
 - 🧾 Validações robustas com Zod
   - Garantia de segurança e consistência dos dados recebidos pela API
+ 
+## 🔗 Link do Backend
+
+[Repositório do Backend](https://github.com/lucasfgaldinos/easy-bills-api)
 
 ## 🖼️ Prints do projeto
 
 <div>
-  <img width="100%" src="./src/assets/prints/habitus-login.png" alt="Print da página Cadastro da aplicação em Desktop" />
+  <img width="100%" src="./src/assets/prints/" alt="" />
   <hr>
-  <img width="100%" src="./src/assets/prints/habits.png" alt="Print da página Cadastro da aplicação em Desktop" />
+  <img width="100%" src="./src/assets/prints/" alt="" />
   <hr>
-  <img width="100%" src="./src/assets/prints/focus-time.png" alt="Print da página Cadastro da aplicação em Desktop" />
+  <img width="100%" src="./src/assets/prints/" alt="" />
 </div>
 
