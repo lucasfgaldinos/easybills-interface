@@ -58,7 +58,6 @@ export function DashboardScreen() {
 				const responseData = await getTransactionsMonthly(month, year, 4);
 
 				setMonthlyItemsData(responseData.history);
-				console.log(responseData.history);
 			} catch (_) {
 				console.error("Error making API request.");
 			}
