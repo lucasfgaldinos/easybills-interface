@@ -17,6 +17,7 @@ export function Header() {
 	const navLink: NavLink[] = [
 		{ name: "Dashboard", path: "/dashboard" },
 		{ name: "Transações", path: "/transactions" },
+		{ name: "Criar transação", path: "/transactions/create" },
 	];
 
 	const handleSignOut = (): void => {
@@ -62,7 +63,7 @@ export function Header() {
 						<nav className="hidden md:flex space-x-3">
 							{navLink.map((link) => (
 								<Link
-									className={`py-1.5 px-2 rounded-lg transition-colors border border-transparent
+									className={`py-2 px-2.5 rounded-md transition-colors border border-transparent
                               ${pathname === link.path ? "bg-primary-base hover:bg-primary-base" : "bg-neutral-light/60 hover:border-primary-light"}`}
 									to={link.path}
 									key={link.path}

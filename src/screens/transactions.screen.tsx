@@ -55,10 +55,9 @@ export function TransactionsScreen() {
 
 			await deleteTransaction(id);
 
-			const updatedTransactions = transactions.filter((t) => {
-				return t.id !== id;
-			});
+			const updatedTransactions = transactions.filter((t) => t.id !== id);
 			setTransactions(updatedTransactions);
+			setFilteredTransactions(updatedTransactions);
 			toast.success("Transação deletada com sucesso!");
 		} catch (err) {
 			console.error({ error: err });

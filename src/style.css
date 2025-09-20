@@ -4,13 +4,13 @@
 @theme {
 	--font-inter: "Inter", sans-serif;
 
-	--color-bg-dark: #181a1b;
+	--color-bg-dark: #040d12;
 	--color-text-light: #f1f1f1;
 	--color-text-muted: #b0b0b0;
 
-	--color-primary-light: #48bb78;
-	--color-primary-base: #38a169;
-	--color-primary-dark: #2f855a;
+	--color-primary-light: #08cb00;
+	--color-primary-base: #06923e;
+	--color-primary-dark: #16610e;
 
 	--color-blue-base: #3b82f6;
 	--color-blue-dark: #2563eb;
@@ -21,9 +21,9 @@
 	--color-error-base: #f43f5e;
 	--color-error-dark: #9f1239;
 
-	--color-neutral-light: #2d3748;
-	--color-neutral-base: #374151;
-	--color-neutral-dark: #1f2937;
+	--color-neutral-light: #4c585b;
+	--color-neutral-base: #393e46;
+	--color-neutral-dark: #222831;
 }
 
 body {

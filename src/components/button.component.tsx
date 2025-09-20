@@ -21,13 +21,13 @@ export function Button({
 }: ButtonProps) {
 	const variantClasses = {
 		primary:
-			"bg-primary-base border border-text-muted text-text-light hover:bg-primary-light active:bg-primary-dark",
+			"bg-primary-base text-text-light hover:bg-primary-light active:bg-primary-dark",
 		outline:
 			"border border-primary-base text-primary-base hover:bg-primary-base/10 active:primary-base/30",
 		secondary:
-			"bg-neutral-base border border-text-light text-text-light hover:bg-neutral-light active:bg-neutral-dark",
+			"bg-neutral-base text-text-light hover:bg-neutral-light active:bg-neutral-dark",
 		danger:
-			"bg-error-base border border-error-dark text-text-light hover:bg-error-base/50 active:bg-error-dark",
+			"bg-error-base text-text-light hover:bg-error-base/50 active:bg-error-dark",
 	};
 
 	function renderLoading() {
@@ -42,7 +42,7 @@ export function Button({
 	return (
 		<button
 			type={type}
-			className={`cursor-pointer px-4 py-2 rounded-full font-medium transition-colors flex items-center justify-center gap-2
+			className={`cursor-pointer px-5 py-3 rounded-md font-medium transition-colors flex items-center justify-center gap-2
             ${variantClasses[variant]}
             ${fullWidth && "w-full"}
             ${(isLoading || disabled) && "opacity-30 cursor-not-allowed"}
