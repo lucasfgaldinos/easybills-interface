@@ -45,10 +45,14 @@ Este repositório contém o código-fonte da **interface web** da aplicação.
 ## 🖼️ Prints do projeto
 
 <div>
-  <img width="100%" src="./src/assets/prints/" alt="" />
+  <img width="100%" src="./src/assets/prints/home.png" alt="Home" />
   <hr>
-  <img width="100%" src="./src/assets/prints/" alt="" />
+  <img width="100%" src="./src/assets/prints/login.png" alt="Login" />
   <hr>
-  <img width="100%" src="./src/assets/prints/" alt="" />
+  <img width="100%" src="./src/assets/prints/dashboard.png" alt="Dashboard" />
+  <hr>
+  <img width="100%" src="./src/assets/prints/transactions.png" alt="Transactions" />
+  <hr>
+  <img width="100%" src="./src/assets/prints/new-transaction.png" alt="New-transaction" />
 </div>
 
